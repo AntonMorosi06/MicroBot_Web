@@ -14,8 +14,19 @@ function initializeSimulationState() {
     },
   };
 
-  applySimulationState(state);
+  const modeSelector = document.getElementById("modeSelector");
+  if (modeSelector) {
+    modeSelector.addEventListener("change", (event) => {
+      const selectedMode = event.target.value;
+      const index = state.modes.indexOf(selectedMode);
+      if (index !== -1) {
+        state.currentModeIndex = index;
+        applySimulationState(state);
+      }
+    });
+  }
 
+  applySimulationState(state);
   window.microbotSimulationState = state;
 }
 
