@@ -25,6 +25,7 @@
       <a href="#overview">Overview</a>
       <a href="#architecture">Architecture</a>
       <a href="#simulation">Simulation</a>
+      <a href="#dashboard">Dashboard</a>
       <a href="#hardware">Hardware</a>
       <a href="#roadmap">Roadmap</a>
     </nav>
@@ -91,6 +92,62 @@
             behavior in a controlled software environment.
           </p>
         </article>
+
+        <section class="section" id="dashboard">
+  <div class="section-header">
+    <p class="section-kicker">System Dashboard</p>
+    <h2>Runtime Overview</h2>
+    <p>
+      This dashboard provides a simplified representation of current system
+      conditions, including node count, active mode, coherence level, and
+      communication status.
+    </p>
+  </div>
+
+  <div class="card-grid three-columns">
+    <article class="info-card metric-card">
+      <span class="metric-label">Active Nodes</span>
+      <strong class="metric-value" id="dashboard-active-nodes">16</strong>
+      <p class="metric-note">Current number of visible system nodes.</p>
+    </article>
+
+    <article class="info-card metric-card">
+      <span class="metric-label">Behavior Mode</span>
+      <strong class="metric-value" id="dashboard-mode">Flocking</strong>
+      <p class="metric-note">Current collective coordination pattern.</p>
+    </article>
+
+    <article class="info-card metric-card">
+      <span class="metric-label">Coherence</span>
+      <strong class="metric-value" id="dashboard-coherence">82%</strong>
+      <p class="metric-note">Estimated level of swarm coordination.</p>
+    </article>
+  </div>
+
+  <div class="card-grid two-columns">
+    <article class="info-card">
+      <h3>Communication Status</h3>
+      <p>
+        The current prototype is not yet running a real distributed node-to-node
+        communication layer. This dashboard therefore represents the intended
+        communication model conceptually rather than through live messaging.
+      </p>
+      <div class="status-row">
+        <span class="status-dot status-dot-warning"></span>
+        <span id="dashboard-network-status">Prototype-level connectivity</span>
+      </div>
+    </article>
+
+    <article class="info-card">
+      <h3>System Notes</h3>
+      <p id="dashboard-system-note">
+        The current configuration demonstrates modular architecture and swarm
+        logic, while full integration between simulation, web, and hardware
+        remains a future step.
+      </p>
+    </article>
+  </div>
+</section>
 
         <article class="info-card">
           <h3>Web Layer</h3>
