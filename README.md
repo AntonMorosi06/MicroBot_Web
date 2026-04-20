@@ -1,6 +1,34 @@
 # MicroBot_Web
 # MicroBot System — Distributed Swarm Prototype
 
+# MicroBot System
+
+MicroBot System is a modular prototype framework for exploring swarm-based systems and emergent behavior.
+
+It combines simulation, visualization, and a minimal hardware implementation to study how simple units can coordinate and produce complex global dynamics without centralized control.
+
+---
+
+## What This Project Shows
+
+This repository demonstrates:
+
+* how local interaction rules generate global behavior
+* how a swarm system can be modeled, measured, and visualized
+* how software, web interfaces, and hardware prototypes can be aligned within a single architecture
+
+---
+
+## System at a Glance
+
+* Simulation of interacting agents with real-time metrics
+* Web-based dashboard reflecting system state
+* ESP32 prototype representing physical nodes
+* Structured architecture and documentation
+
+---
+
+
 ## Overview
 
 MicroBot is a modular swarm system concept based on distributed units (nodes) that coordinate to produce emergent collective behavior.
