@@ -1,37 +1,20 @@
-"""
-MicroBot System - Swarm Simulation Entry Point
-----------------------------------------------
-Runs the visual simulation using pygame.
-"""
-
-from __future__ import annotations
 import sys
 import pygame
 
-from config import (
-    WINDOW_WIDTH,
-    WINDOW_HEIGHT,
-    WINDOW_TITLE,
-    BACKGROUND_COLOR,
-    NODE_COLOR,
-    NEIGHBOR_LINE_COLOR,
-    TEXT_COLOR,
-    FPS,
-    SHOW_NEIGHBOR_LINKS,
-    SHOW_INFO_TEXT,
-)
+from config import *
 from swarm.simulation import SwarmSimulation
 
 
-def draw_text(screen: pygame.Surface, font: pygame.font.Font, text: str, x: int, y: int) -> None:
+def draw_text(screen, font, text, x, y):
     rendered = font.render(text, True, TEXT_COLOR)
     screen.blit(rendered, (x, y))
 
 
-def main() -> None:
+def main():
     pygame.init()
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption(WINDOW_TITLE)
+
     clock = pygame.time.Clock()
     font = pygame.font.SysFont("Arial", 18)
 
@@ -44,6 +27,16 @@ def main() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    simulation.set_mode(SwarmSimulation.MODE_ALIGNMENT)
+
+                if event.key == pygame.K_2:
+                    simulation.set_mode(SwarmSimulation.MODE_FLOCKING)
+
+                if event.key == pygame.K_3:
+                    simulation.set_mode(SwarmSimulation.MODE_DISORDER)
 
         simulation.update()
 
@@ -69,9 +62,10 @@ def main() -> None:
                 agent.radius,
             )
 
-        if SHOW_INFO_TEXT:
-            draw_text(screen, font, "MicroBot Swarm Simulation", 20, 20)
-            draw_text(screen, font, f"Agents: {len(simulation.agents)}", 20, 45)
+        draw_text(screen, font, "Modes:", 20, 20)
+        draw_text(screen, font, "[1] Alignment", 20, 45)
+        draw_text(screen, font, "[2] Flocking", 20, 70)
+        draw_text(screen, font, "[3] Disorder", 20, 95)
 
         pygame.display.flip()
 
