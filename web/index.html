@@ -1,1 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MicroBot System</title>
+  <meta
+    name="description"
+    content="MicroBot System is a distributed swarm prototype combining simulation, web visualization, and hardware experimentation."
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="background-grid"></div>
+  <div class="background-glow background-glow-1"></div>
+  <div class="background-glow background-glow-2"></div>
 
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-text">MicroBot System</span>
+    </div>
+
+    <nav class="nav">
+      <a href="#overview">Overview</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#simulation">Simulation</a>
+      <a href="#hardware">Hardware</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="overview">
+      <div class="hero-content">
+        <p class="eyebrow">Distributed Swarm Prototype</p>
+        <h1>MicroBot System</h1>
+        <p class="hero-text">
+          A modular experimental platform exploring distributed intelligence
+          through simulation, visualization, and hardware prototyping.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#simulation">Explore System</a>
+          <a class="button button-secondary" href="#architecture">Read Architecture</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-value" id="stat-nodes">16</span>
+            <span class="stat-label">Nodes</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" id="stat-mode">Flocking</span>
+            <span class="stat-label">Mode</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" id="stat-status">Prototype</span>
+            <span class="stat-label">Status</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-panel">
+        <div class="panel-card panel-visual">
+          <div class="panel-header">
+            <span>System Activity</span>
+            <span class="status-badge">Active</span>
+          </div>
+          <canvas id="swarmCanvas" width="520" height="320"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="architecture">
+      <div class="section-header">
+        <p class="section-kicker">System Structure</p>
+        <h2>Layered Architecture</h2>
+        <p>
+          The MicroBot system is organized as a modular architecture in which
+          simulation, visualization, and physical execution remain separated
+          but conceptually aligned.
+        </p>
+      </div>
+
+      <div class="card-grid three-columns">
+        <article class="info-card">
+          <h3>Simulation Layer</h3>
+          <p>
+            Models local rules, agent interactions, and emergent collective
+            behavior in a controlled software environment.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <h3>Web Layer</h3>
+          <p>
+            Exposes structure, metrics, and visual system behavior through a
+            browser-based interface designed for interpretation and presentation.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <h3>Hardware Layer</h3>
+          <p>
+            Translates simplified swarm logic into physical outputs through an
+            ESP32-based LED prototype.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="simulation">
+      <div class="section-header">
+        <p class="section-kicker">Simulation Module</p>
+        <h2>Behavioral Logic</h2>
+        <p>
+          The simulation module provides the reference implementation of the
+          system’s swarm logic through local interaction rules such as
+          alignment, cohesion, and separation.
+        </p>
+      </div>
+
+      <div class="card-grid two-columns">
+        <article class="info-card">
+          <h3>Core Features</h3>
+          <ul class="clean-list">
+            <li>Multi-agent environment</li>
+            <li>Local interaction rules</li>
+            <li>Mode switching</li>
+            <li>Real-time visual feedback</li>
+          </ul>
+        </article>
+
+        <article class="info-card">
+          <h3>Current Modes</h3>
+          <ul class="clean-list">
+            <li>Alignment</li>
+            <li>Flocking</li>
+            <li>Disorder</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="hardware">
+      <div class="section-header">
+        <p class="section-kicker">Hardware Module</p>
+        <h2>Physical Prototype</h2>
+        <p>
+          The current hardware prototype uses a single ESP32 and multiple LEDs
+          to represent simplified node states and coordinated patterns.
+        </p>
+      </div>
+
+      <div class="card-grid two-columns">
+        <article class="info-card">
+          <h3>Current Setup</h3>
+          <p>
+            One ESP32 board controls five LED-based nodes through digital GPIO
+            outputs and serial-triggered mode switching.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <h3>Future Direction</h3>
+          <p>
+            The long-term goal is to move toward independent nodes, local
+            communication, sensing, and physically distributed execution.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <div class="section-header">
+        <p class="section-kicker">Development Path</p>
+        <h2>Roadmap</h2>
+        <p>
+          The project evolves through progressive consolidation, integration,
+          and distributed expansion rather than through isolated experiments.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <article class="timeline-item">
+          <span class="timeline-step">01</span>
+          <div>
+            <h3>System Consolidation</h3>
+            <p>Repository cleanup, documentation alignment, and stable module structure.</p>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <span class="timeline-step">02</span>
+          <div>
+            <h3>Functional Integration</h3>
+            <p>Progressive connection between simulation, interface, and control layers.</p>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <span class="timeline-step">03</span>
+          <div>
+            <h3>Distributed Expansion</h3>
+            <p>Transition from centralized prototype to multi-node distributed architecture.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>MicroBot System — Distributed Swarm Prototype</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/simulations.js"></script>
+  <script src="js/swarm-mesh.js"></script>
+  <script src="js/viewer3d.js"></script>
+  <script src="js/tracking.js"></script>
+  <script src="js/network.js"></script>
+  <script src="js/energy.js"></script>
+</body>
+</html>
