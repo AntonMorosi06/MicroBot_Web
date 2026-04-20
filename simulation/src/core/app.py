@@ -1,7 +1,7 @@
 """
 MicroBot System - Simulation Application Core
 ---------------------------------------------
-Coordinates world state, bots, interaction rules, and rendering.
+Coordinates world state, bots, interaction rules, metrics, and rendering.
 """
 
 from __future__ import annotations
@@ -15,8 +15,10 @@ from config.settings import (
     BACKGROUND_COLOR,
     BOT_COLOR,
     LINK_COLOR,
+    ACCENT_COLOR,
     SHOW_LINKS,
     SHOW_HUD,
+    SHOW_CENTER_OF_MASS,
     WORLD_PADDING,
     NUM_BOTS,
     BOT_RADIUS,
@@ -36,6 +38,12 @@ from src.systems.formations import (
     apply_cohesion,
     apply_separation,
 )
+from src.systems.metrics import (
+    compute_average_speed,
+    compute_average_neighbors,
+    compute_center_of_mass,
+    compute_coherence,
+)
 from src.ui.hud import HUD
 
 
@@ -51,6 +59,11 @@ class SimulationApp:
 
         self.bots: list[Bot] = []
         self.neighbor_map: dict[int, list[Bot]] = {}
+
+        self.average_speed = 0.0
+        self.average_neighbors = 0.0
+        self.coherence = 0.0
+        self.center_of_mass = (0.0, 0.0)
 
         self.reset()
 
@@ -80,6 +93,10 @@ class SimulationApp:
             self.bots.append(bot)
 
         self.neighbor_map = {}
+        self.average_speed = 0.0
+        self.average_neighbors = 0.0
+        self.coherence = 0.0
+        self.center_of_mass = (0.0, 0.0)
 
     def update(self) -> None:
         """
@@ -117,6 +134,11 @@ class SimulationApp:
         for bot in self.bots:
             bot.update_position()
             bot.bounce_on_bounds(self.world.width, self.world.height)
+
+        self.average_speed = compute_average_speed(self.bots)
+        self.average_neighbors = compute_average_neighbors(self.neighbor_map)
+        self.coherence = compute_coherence(self.bots)
+        self.center_of_mass = compute_center_of_mass(self.bots)
 
     def handle_keydown(self, key: int) -> None:
         """
@@ -164,6 +186,20 @@ class SimulationApp:
                 bot.radius,
             )
 
+    def draw_center_of_mass(self, surface: pygame.Surface) -> None:
+        """
+        Draws the estimated center of mass of the swarm.
+        """
+        if not SHOW_CENTER_OF_MASS:
+            return
+
+        x, y = self.center_of_mass
+        cx, cy = int(x), int(y)
+
+        pygame.draw.circle(surface, ACCENT_COLOR, (cx, cy), 5)
+        pygame.draw.line(surface, ACCENT_COLOR, (cx - 10, cy), (cx + 10, cy), 1)
+        pygame.draw.line(surface, ACCENT_COLOR, (cx, cy - 10), (cx, cy + 10), 1)
+
     def draw(self, surface: pygame.Surface, fps_value: float) -> None:
         """
         Renders the current simulation state.
@@ -172,6 +208,7 @@ class SimulationApp:
 
         self.draw_links(surface)
         self.draw_bots(surface)
+        self.draw_center_of_mass(surface)
 
         if SHOW_HUD:
             self.hud.draw(
@@ -179,4 +216,7 @@ class SimulationApp:
                 mode_name=self.controller.get_mode(),
                 bot_count=len(self.bots),
                 fps_value=fps_value,
+                average_speed=self.average_speed,
+                average_neighbors=self.average_neighbors,
+                coherence=self.coherence,
             )
