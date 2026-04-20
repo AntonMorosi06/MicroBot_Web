@@ -388,3 +388,47 @@ main {
     grid-template-columns: 1fr;
   }
 }
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metric-label {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.metric-value {
+  font-size: 2.1rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.metric-note {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  color: var(--text);
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.status-dot-warning {
+  background: #ffd36a;
+  box-shadow: 0 0 14px rgba(255, 211, 106, 0.45);
+}
