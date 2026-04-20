@@ -1,208 +1,228 @@
 # MicroBot System — Architecture
 
-## 1. Architectural Overview
+## Overview
 
-The MicroBot system is designed as a layered and modular architecture that separates concerns between simulation, visualization, and physical execution.
+The MicroBot System is structured as a layered, modular architecture designed to support the study and development of swarm-based systems.
 
-The system is not monolithic. Instead, it is composed of independent but interoperable components that can evolve separately while maintaining a coherent structure.
-
-At a high level, the architecture can be described as a three-layer system:
-
-| Layer            | Description                       | Role                                       |
-| ---------------- | --------------------------------- | ------------------------------------------ |
-| Simulation Layer | Software-based multi-agent system | Defines and tests swarm logic              |
-| Interface Layer  | Web-based visualization system    | Provides observation and interaction       |
-| Hardware Layer   | Physical node implementation      | Executes behavior in real-world conditions |
-
-These layers are connected conceptually rather than tightly coupled, allowing progressive development.
+The architecture separates concerns between perception, control, interaction, and physical execution. This enables incremental development while maintaining conceptual consistency across modules.
 
 ---
 
-## 2. Design Principles
+## Architectural Layers
 
-The architecture is based on a set of guiding principles that influence all components of the system.
+The system is organized into six conceptual layers:
 
-| Principle        | Description                                                |
-| ---------------- | ---------------------------------------------------------- |
-| Modularity       | Each component can be developed and modified independently |
-| Scalability      | The system should support increasing numbers of nodes      |
-| Decentralization | No central controller is required for core behavior        |
-| Abstraction      | Simulation precedes hardware implementation                |
-| Observability    | System state must be visible and interpretable             |
-
-These principles ensure that the system remains flexible and extensible.
-
----
-
-## 3. Simulation Layer
-
-The simulation layer represents the core logic of the system.
-
-It models a swarm as a set of agents interacting within an environment according to predefined local rules.
-
-### Internal Structure
-
-| Module         | Responsibility                              |
-| -------------- | ------------------------------------------- |
-| agent.py       | Defines individual node behavior and state  |
-| environment.py | Represents the space and constraints        |
-| rules.py       | Implements interaction logic between agents |
-| simulation.py  | Manages update cycles and system evolution  |
-
-### Execution Model
-
-The simulation operates through discrete time steps. At each step:
-
-* each agent evaluates its local state
-* interaction rules are applied
-* the global system state is updated
-
-No global controller enforces behavior. The system evolves through repeated local interactions.
+| Layer      | Description                                               |
+| ---------- | --------------------------------------------------------- |
+| Input      | External commands, user interaction, or future interfaces |
+| Vision     | Environmental perception (future component)               |
+| Software   | Simulation, control logic, metrics, and visualization     |
+| Controller | Embedded execution layer (e.g. ESP32)                     |
+| Field      | Interaction medium between nodes (conceptual)             |
+| Nodes      | Individual MicroBot units                                 |
 
 ---
 
-## 4. Interface Layer (Web)
+## Layer Responsibilities
 
-The interface layer provides a visual and interactive representation of the system.
+### Input Layer
 
-It is not responsible for generating behavior, but for exposing system dynamics in a human-readable form.
+Handles external control signals such as:
 
-### Structure
+* user commands
+* UI interactions
+* future API integrations
 
-| Component  | Role                            |
-| ---------- | ------------------------------- |
-| index.html | Structural layout               |
-| style.css  | Visual design                   |
-| script.js  | Interaction and dynamic updates |
-
-### Responsibilities
-
-* display node states
-* visualize patterns and transitions
-* provide user interaction (controls, modes)
-* support debugging and interpretation
-
-This layer acts as a bridge between system logic and human understanding.
+This layer does not directly control nodes, but feeds the system state.
 
 ---
 
-## 5. Hardware Layer
+### Vision Layer (Planned)
 
-The hardware layer is a simplified physical implementation of the system.
+Intended to provide environmental awareness through:
 
-In the current version, nodes are represented by LEDs controlled via an ESP32 microcontroller.
+* computer vision
+* tracking systems
+* external sensing
 
-### Structure
-
-| Element   | Description                           |
-| --------- | ------------------------------------- |
-| ESP32     | Central execution unit                |
-| LED units | Represent individual nodes            |
-| GPIO pins | Map logical nodes to physical outputs |
-
-### Behavior Model
-
-Each LED corresponds to a node state. Behavior is implemented through predefined modes:
-
-| Mode   | Description                     |
-| ------ | ------------------------------- |
-| Sync   | All nodes share the same state  |
-| Wave   | State propagates sequentially   |
-| Chase  | Moving pattern across nodes     |
-| Random | Independent stochastic behavior |
-| Alert  | High-frequency global signal    |
-
-Although centralized in implementation, this layer is designed to emulate distributed logic.
+Currently not implemented, but structurally defined.
 
 ---
 
-## 6. Data Flow
+### Software Layer
 
-The system does not yet implement full bidirectional communication between layers. However, a conceptual data flow can be defined.
+Core of the system.
 
-| Source     | Target     | Type of Data                      |
-| ---------- | ---------- | --------------------------------- |
-| Simulation | Interface  | State updates, positions, metrics |
-| Interface  | Simulation | Control commands (future)         |
-| Interface  | Hardware   | Mode selection (manual input)     |
-| Hardware   | Interface  | Not implemented (future)          |
+Responsible for:
 
-Currently, interaction is primarily manual (e.g., serial commands for hardware).
+* simulation of swarm behavior
+* implementation of interaction rules
+* computation of system-level metrics
+* visualization logic (web and HUD)
 
----
-
-## 7. State Management
-
-Each node in the system maintains an internal state that evolves over time.
-
-A minimal node state can be represented as:
-
-| Field     | Description                          |
-| --------- | ------------------------------------ |
-| id        | Unique identifier                    |
-| state     | Current activation or behavior state |
-| position  | Spatial location (simulation only)   |
-| neighbors | Nearby nodes (logical or spatial)    |
-
-State updates occur at each simulation step or hardware cycle.
+This layer defines how local interactions translate into global behavior.
 
 ---
 
-## 8. Synchronization Model
+### Controller Layer
 
-The system uses a time-based update mechanism rather than event-driven synchronization.
+Represents embedded execution.
 
-| Aspect      | Description                                                                      |
-| ----------- | -------------------------------------------------------------------------------- |
-| Timing      | Based on discrete time steps (`millis()` in hardware, loop cycles in simulation) |
-| Consistency | No strict global synchronization required                                        |
-| Latency     | Not yet modeled explicitly                                                       |
+In the current prototype:
 
-This approach simplifies implementation while remaining compatible with distributed systems.
+* implemented via ESP32
+* controls multiple nodes centrally
+
+In future versions:
+
+* distributed controllers per node
 
 ---
 
-## 9. Extensibility
+### Field Layer (Conceptual)
 
-The architecture is designed to support future extensions without structural redesign.
+Defines how nodes influence each other.
 
-Possible extensions include:
+Examples:
 
-* wireless communication between nodes
-* distributed execution (multiple microcontrollers)
+* proximity interaction
+* force-based models (e.g. magnetic fields)
+* communication signals
+
+In the current implementation:
+
+* abstracted through distance-based interaction rules
+
+---
+
+### Node Layer
+
+Represents individual MicroBot units.
+
+Each node is defined by:
+
+* position
+* velocity
+* local perception radius
+* simple behavioral rules
+
+Nodes do not have global knowledge of the system.
+
+---
+
+## Data Flow
+
+The system operates as a continuous loop:
+
+```text id="flow1"
+Input → Software → Controller → Nodes → (Field Interaction) → Software
+```
+
+Explanation:
+
+1. Input defines system state or mode
+2. Software computes behavior and metrics
+3. Controller applies commands
+4. Nodes update their state
+5. Interactions occur through the field (conceptual)
+6. Updated state is fed back into the system
+
+This loop enables emergent behavior.
+
+---
+
+## Simulation Architecture
+
+Within the software layer, the simulation is structured as:
+
+```text id="flow2"
+World → Bots → Neighbor Detection → Interaction Rules → Metrics → Rendering
+```
+
+Where:
+
+* **World** defines boundaries
+* **Bots** are agents
+* **Neighbor Detection** determines local context
+* **Interaction Rules** drive behavior
+* **Metrics** describe global state
+* **Rendering** visualizes the system
+
+---
+
+## Metric Layer
+
+The system includes a metric computation layer that aggregates local state into global descriptors.
+
+| Metric            | Meaning               |
+| ----------------- | --------------------- |
+| Average Speed     | System activity level |
+| Average Neighbors | Interaction density   |
+| Coherence         | Directional alignment |
+| Center of Mass    | Spatial reference     |
+
+These metrics are computed in simulation and reflected in the web interface.
+
+---
+
+## Current Implementation Mapping
+
+| Conceptual Layer | Current Implementation            |
+| ---------------- | --------------------------------- |
+| Input            | Keyboard + Web UI                 |
+| Vision           | Not implemented                   |
+| Software         | Python simulation + Web interface |
+| Controller       | ESP32 prototype                   |
+| Field            | Distance-based interaction        |
+| Nodes            | Simulated agents + LED nodes      |
+
+---
+
+## Architectural Properties
+
+The system exhibits the following properties:
+
+* **Decentralization (conceptual)**
+  Nodes act locally, without global awareness
+
+* **Emergence**
+  Global patterns arise from local interactions
+
+* **Modularity**
+  Each layer can evolve independently
+
+* **Scalability (planned)**
+  Architecture supports expansion to many nodes
+
+---
+
+## Limitations
+
+Current architecture limitations include:
+
+| Area            | Limitation                      |
+| --------------- | ------------------------------- |
+| Distribution    | Hardware is centralized         |
+| Communication   | No real node-to-node messaging  |
+| Physics         | Simplified interaction model    |
+| Synchronization | No real-time system integration |
+
+---
+
+## Future Evolution
+
+Planned architectural improvements:
+
+* distributed node controllers
+* real communication layer
 * sensor integration
-* adaptive rule systems
-* real-time feedback loops
-
-Each extension can be integrated at the appropriate layer without affecting unrelated components.
+* field-based physical interaction models
+* synchronization between simulation and hardware
 
 ---
 
-## 10. Limitations of Current Architecture
+## Conclusion
 
-| Area            | Limitation                                    |
-| --------------- | --------------------------------------------- |
-| Distribution    | Hardware is still centralized                 |
-| Communication   | No real inter-node messaging                  |
-| Synchronization | Simplified timing model                       |
-| Abstraction gap | Simulation and hardware not yet fully aligned |
+The MicroBot System architecture provides a structured foundation for exploring swarm behavior.
 
-These limitations are consistent with the early-stage nature of the system.
-
----
-
-## 11. Architectural Direction
-
-The long-term goal is to transition toward a fully distributed architecture in which:
-
-* each node operates independently
-* communication is local and peer-to-peer
-* global behavior emerges without centralized control
-
-This will require:
-
-* embedded communication protocols
-* decentralized state management
-* robust synchronization strategies
-
-The current architecture serves as a foundation for this transition.
+It separates conceptual layers while maintaining a consistent data flow, allowing the system to evolve incrementally toward more complex and realistic implementations.
