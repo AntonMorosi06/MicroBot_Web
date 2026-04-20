@@ -1,168 +1,210 @@
-# MicroBot System — Web Module
+# MicroBot System — Simulation Module
 
-## 1. Overview
+## Overview
 
-The web module provides the visual and interactive interface of the MicroBot system.
+The simulation module provides a software-based representation of the MicroBot system.
 
-Its purpose is to represent the structure, behavior, and conceptual dynamics of the project through a browser-based environment. Unlike the simulation module, which defines and executes system logic, the web module is focused on presentation, interpretation, and interaction.
+It models a simplified swarm of interacting units (bots) moving within a bounded environment. Each bot follows local interaction rules, and global behavior emerges from these interactions.
 
-This module is intended to make the system readable both from a technical and demonstrative perspective. It acts as a bridge between the internal architecture of the project and the external understanding of its behavior.
+The purpose of this module is to:
 
----
+* validate swarm behavior logic
+* provide a visual and measurable system state
+* act as a bridge between conceptual architecture and physical implementation
 
-## 2. Role Within the System
-
-The web layer does not replace the simulation layer and does not act as the core computational engine of the system. Its role is instead complementary.
-
-| Layer      | Primary Function                                  |
-| ---------- | ------------------------------------------------- |
-| Simulation | Defines and executes swarm logic                  |
-| Web        | Visualizes, explains, and exposes system behavior |
-| Hardware   | Represents simplified physical execution          |
-
-The web module is therefore the main presentation layer of the project. It is particularly relevant when the system is shown as a prototype, a technical concept, or a demonstrative platform.
+The simulation is intentionally minimal, but structured in a way that supports future extensions.
 
 ---
 
-## 3. Objectives
+## Architecture
 
-The web module has three main objectives.
+The module is organized into distinct layers:
 
-First, it provides a visual interpretation of the MicroBot system.
-Second, it improves usability by organizing information into an accessible structure.
-Third, it supports communication of the project to other people, including collaborators, technical reviewers, and potential evaluators.
+| Layer    | Description                                |
+| -------- | ------------------------------------------ |
+| core     | Application lifecycle, world management    |
+| entities | Bot definition and simulation controller   |
+| systems  | Interaction rules and system-level metrics |
+| ui       | Rendering and HUD                          |
+| config   | Centralized configuration                  |
 
-Its role is therefore not limited to aesthetics. It is a structural part of how the system is understood.
-
----
-
-## 4. Module Structure
-
-The web module is organized as a standard frontend project.
-
-| Path       | Description                             |
-| ---------- | --------------------------------------- |
-| index.html | Main entry point of the interface       |
-| css/       | Visual styling and layout definitions   |
-| js/        | Frontend logic and interactive behavior |
-| assets/    | Static visual resources                 |
-| models/    | Optional 3D or structured visual assets |
-
-This organization keeps the presentation layer separated from simulation and hardware logic.
+This separation allows the simulation to remain modular and maintainable.
 
 ---
 
-## 5. Functional Scope
+## Simulation Model
 
-The current web module is intended to support the following functions.
+The system is composed of multiple bots defined by:
 
-| Function              | Description                                       |
-| --------------------- | ------------------------------------------------- |
-| System Presentation   | Introduces the MicroBot concept and architecture  |
-| Visual Representation | Displays visual structures, sections, and metrics |
-| Interaction           | Allows the user to navigate and inspect content   |
-| Demonstration Support | Helps explain the project in a coherent way       |
+* position `(x, y)`
+* velocity `(vx, vy)`
+* maximum speed constraint
+* local perception radius
 
-Depending on the current implementation state, some sections may be more conceptual than computational. This is acceptable at the prototype stage, provided that the purpose of each section remains clear.
+Bots do not have global knowledge. Each unit interacts only with nearby neighbors, producing emergent behavior at the system level.
 
 ---
 
-## 6. Design Logic
+## Interaction Rules
 
-The design of the web module should reflect the architecture of the system rather than act as a disconnected showcase.
+The simulation implements three fundamental behaviors:
 
-The interface must therefore maintain consistency with the underlying project logic. Visual sections, controls, labels, and metrics should correspond to real components, real concepts, or clearly declared future directions.
+### Alignment
 
-This prevents the interface from becoming a decorative layer detached from the actual system.
+Bots tend to match the velocity of nearby neighbors.
 
----
+### Cohesion
 
-## 7. Integration with the Rest of the Project
+Bots move toward the average position of nearby neighbors.
 
-The web module is intended to align progressively with the other layers of the system.
+### Separation
 
-| Source        | Web Relationship                                                          |
-| ------------- | ------------------------------------------------------------------------- |
-| Documentation | The web module communicates the documented architecture                   |
-| Simulation    | The web module may represent or expose simulation behavior                |
-| Hardware      | The web module may describe or control hardware states in future versions |
+Bots avoid getting too close to nearby neighbors.
 
-At the current stage, the relationship between layers may be partial rather than fully integrated. This is normal in a prototype-oriented workflow.
+These rules can be combined to produce different swarm behaviors.
 
 ---
 
-## 8. How to Run
+## Simulation Modes
 
-In its simplest form, the web module can be opened directly through the main HTML file.
+The simulation supports multiple modes:
 
-```bash id="6pu7sq"
-open index.html
+| Mode      | Description                                  |
+| --------- | -------------------------------------------- |
+| Alignment | Velocity synchronization                     |
+| Flocking  | Combined alignment, cohesion, and separation |
+| Disorder  | Random motion without coordination           |
+
+Modes can be switched at runtime using keyboard input.
+
+---
+
+## System Metrics
+
+The simulation computes real-time metrics describing the global state of the swarm.
+
+### Average Speed
+
+Represents the mean magnitude of velocity across all bots.
+
+This provides an indication of overall system activity.
+
+---
+
+### Average Neighbors
+
+Represents the average number of nearby bots detected per unit.
+
+This reflects local density and interaction level.
+
+---
+
+### Coherence
+
+Measures how aligned the swarm is in terms of movement direction.
+
+It is defined as the ratio between:
+
+* the magnitude of the sum of all velocity vectors
+* the sum of individual speed magnitudes
+
+Values range from:
+
+* `0.0` → completely disordered system
+* `1.0` → fully aligned system
+
+---
+
+### Center of Mass
+
+Represents the average position of all bots.
+
+This provides a global spatial reference and helps visualize collective movement.
+
+---
+
+## Rendering
+
+The simulation uses `pygame` for visualization.
+
+The rendering includes:
+
+* bot positions
+* optional neighbor links
+* center of mass indicator
+* HUD with real-time metrics
+
+---
+
+## Controls
+
+| Key | Action           |
+| --- | ---------------- |
+| 1   | Alignment mode   |
+| 2   | Flocking mode    |
+| 3   | Disorder mode    |
+| R   | Reset simulation |
+
+---
+
+## Execution
+
+### Install dependencies
+
+```bash
+pip install -r requirements.txt
 ```
 
-Alternatively, it can be served locally through a simple development server.
+### Run the simulation
 
-For example:
-
-```bash id="7tyi0o"
-python -m http.server 8000
+```bash
+python main.py
 ```
 
-and then opened in a browser through a local address.
+---
 
-Using a local server is recommended when the module includes assets, dynamic scripts, or browser restrictions related to file loading.
+## Current Limitations
+
+| Area          | Limitation                                             |
+| ------------- | ------------------------------------------------------ |
+| Physics       | Simplified motion model                                |
+| Environment   | No obstacles or external fields                        |
+| Communication | No explicit messaging between bots                     |
+| Scalability   | Designed for visualization, not large-scale simulation |
+
+These constraints are intentional and consistent with the current scope.
 
 ---
 
-## 9. Expected Internal Organization
+## Role in the System
 
-A coherent internal structure of the web module should follow this model:
+The simulation module complements the rest of the repository:
 
-| Directory | Purpose                                               |
-| --------- | ----------------------------------------------------- |
-| css/      | Styling rules, layout system, responsive definitions  |
-| js/       | UI logic, animation control, data-driven sections     |
-| assets/   | Images, icons, backgrounds, visual resources          |
-| models/   | Optional 3D objects or structured graphical resources |
+| Module     | Role                              |
+| ---------- | --------------------------------- |
+| docs       | Defines architecture and concepts |
+| simulation | Implements behavior and metrics   |
+| web        | Provides presentation layer       |
+| hardware   | Provides physical prototype       |
 
-This structure supports maintainability and reduces coupling between presentation resources.
-
----
-
-## 10. Limitations
-
-The current web module may present some prototype-stage limitations.
-
-| Area                  | Limitation                                                         |
-| --------------------- | ------------------------------------------------------------------ |
-| Data Binding          | Interface may not yet receive live data from simulation            |
-| Real-Time Interaction | Some visual elements may be demonstrative rather than functional   |
-| Integration           | Full synchronization with hardware is not yet implemented          |
-| Scalability           | Interface structure may still require refinement for future growth |
-
-These limitations are consistent with the current development phase and do not invalidate the usefulness of the module.
+The simulation acts as a central reference for system behavior before hardware scaling.
 
 ---
 
-## 11. Future Development
+## Future Extensions
 
-The web module can be expanded in several directions.
+Possible future improvements include:
 
-| Area               | Possible Extension                                    |
-| ------------------ | ----------------------------------------------------- |
-| Live Visualization | Real-time display of simulation state                 |
-| Controls           | Interactive commands linked to simulation or hardware |
-| Metrics            | Display of node count, behavior mode, state variables |
-| 3D Representation  | More advanced visual models of swarm structure        |
-| Monitoring         | Dashboard-style status panels                         |
-
-These extensions should be introduced only when they remain coherent with the real capabilities of the system.
+* obstacle interaction
+* force-based fields (e.g. magnetic models)
+* advanced clustering analysis
+* real-time parameter tuning
+* integration with external control systems
 
 ---
 
-## 12. Conclusion
+## Conclusion
 
-The web module is a critical component of the MicroBot system because it transforms internal structure into observable form.
+The simulation module provides a structured and observable environment for studying swarm behavior within the MicroBot system.
 
-It is not only a visual accessory, but a functional presentation layer that improves readability, communication, and system interpretation.
-
-Its long-term value lies in its ability to remain aligned with simulation logic, hardware evolution, and architectural documentation.
+It is not a complete model, but a foundational layer that supports both experimentation and system-level reasoning.
