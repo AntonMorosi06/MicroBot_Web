@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
+  initializeDashboardStatus();
+});
+
+function initializeDashboardStatus() {
+  const status = document.getElementById("stat-status");
+  if (status) {
+    status.textContent = "Integrated Prototype";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
   initializeDashboard();
 });
 
