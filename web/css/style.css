@@ -432,3 +432,24 @@ main {
   background: #ffd36a;
   box-shadow: 0 0 14px rgba(255, 211, 106, 0.45);
 }
+.dashboard-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.dashboard-controls label {
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+
+.dashboard-controls select {
+  min-width: 180px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  outline: none;
+}
