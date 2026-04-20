@@ -1,5 +1,5 @@
 """
-Main simulation engine for the MicroBot swarm system.
+Extended simulation engine with multiple behavior modes.
 """
 
 from __future__ import annotations
@@ -15,18 +15,26 @@ from config import (
 )
 from swarm.agent import Agent
 from swarm.environment import Environment
-from swarm.rules import get_neighbors, apply_alignment
+from swarm.rules import (
+    get_neighbors,
+    apply_alignment,
+    apply_cohesion,
+    apply_separation,
+)
 
 
 class SwarmSimulation:
-    """
-    Coordinates environment state, agents, and update logic.
-    """
+
+    MODE_ALIGNMENT = 0
+    MODE_FLOCKING = 1
+    MODE_DISORDER = 2
 
     def __init__(self, width: int, height: int) -> None:
         self.environment = Environment(width, height)
         self.agents: List[Agent] = self._create_agents()
         self.neighbor_map: Dict[int, List[Agent]] = {}
+
+        self.mode = self.MODE_FLOCKING
 
     def _create_agents(self) -> List[Agent]:
         agents: List[Agent] = []
@@ -46,6 +54,9 @@ class SwarmSimulation:
 
         return agents
 
+    def set_mode(self, mode: int) -> None:
+        self.mode = mode
+
     def update(self) -> None:
         self.neighbor_map = {}
 
@@ -53,7 +64,18 @@ class SwarmSimulation:
             neighbors = get_neighbors(agent, self.agents, AGENT_DETECTION_RADIUS)
             self.neighbor_map[agent.agent_id] = neighbors
 
-            apply_alignment(agent, neighbors)
+            if self.mode == self.MODE_ALIGNMENT:
+                apply_alignment(agent, neighbors)
+
+            elif self.mode == self.MODE_FLOCKING:
+                apply_alignment(agent, neighbors)
+                apply_cohesion(agent, neighbors)
+                apply_separation(agent, neighbors)
+
+            elif self.mode == self.MODE_DISORDER:
+                agent.vx += random.uniform(-0.2, 0.2)
+                agent.vy += random.uniform(-0.2, 0.2)
+
             agent.limit_speed()
 
         for agent in self.agents:
@@ -62,6 +84,3 @@ class SwarmSimulation:
                 self.environment.width,
                 self.environment.height,
             )
-
-    def get_neighbor_count(self, agent_id: int) -> int:
-        return len(self.neighbor_map.get(agent_id, []))
