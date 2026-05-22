@@ -193,3 +193,19 @@ Independent developer focused on distributed systems, simulation, and modular ro
 This project is part of a broader research and development path aimed at building a scalable swarm system.
 
 It is intended both as a technical exploration and as a foundation for future applications.
+
+<!-- MICROBOT_PUBLIC_RIGHTS_NOTICE_START -->
+
+## License and Usage
+
+Copyright (c) 2026 Anton Morosi. All rights reserved.
+
+This repository is published for portfolio, educational, and demonstration purposes only. No permission is granted to copy, modify, redistribute, commercially use, sublicense, sell, or create derivative works from the code, documentation, images, diagrams, 3D assets, simulations, interface designs, technical descriptions, or project materials without prior written permission.
+
+See `LICENSE`, `NOTICE.md`, and `PUBLICATION_NOTICE.md` for details.
+
+## Prototype Status Notice
+
+This public repository may include simulated dashboards, conceptual UI states, planned specifications, and design targets. Unless a value is explicitly supported by hardware logs, test reports, measurements, or validation evidence, it should be treated as a prototype target or demonstration value rather than a hardware-validated result.
+
+<!-- MICROBOT_PUBLIC_RIGHTS_NOTICE_END -->
